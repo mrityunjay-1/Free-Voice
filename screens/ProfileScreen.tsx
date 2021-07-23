@@ -15,9 +15,10 @@ const ProfileScreen = ({navigation}: any) => {
   
   const fetchUserData = async () => {
     console.log("fetched user data");
+   
     try{
       const res = await axios({
-        url: 'http://192.168.43.148:8080/get_user/',
+        url: data.api_link + "/get_user",
         method: 'get',
         headers: {
           'Authorization': 'Bearer ' + data.token
@@ -47,7 +48,7 @@ const ProfileScreen = ({navigation}: any) => {
         <FlatList 
           ListHeaderComponent={<>
             <View style={{flexDirection: 'row', padding: 25, alignItems: 'flex-end' }} >
-              <Image source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}} style={{width: 80, height: 80, borderRadius: 50}} />
+              <Image source={{uri: 'https://storage.googleapis.com/free-voice-images/profile.png'}} style={{width: 80, height: 80, borderRadius: 50}} />
               <View>
                 <Text style={{ fontSize: 24 }}> { userPostData.name } </Text>
               </View>

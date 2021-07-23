@@ -8,13 +8,12 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
 
 
 const NewPost = () => {
   const {data}: any = useContext(ContextData);
 
-  const [postBody, setPostBody] = React.useState("");
+  const [postBody, setPostBody] = React.useState(" ");
   const [image, set_image]: any = React.useState({});
   
   // creating post and sending it to my node server
@@ -31,6 +30,11 @@ const NewPost = () => {
       alert("Please Write something or add an image !");
       return null; 
     }
+
+    if(image.uri && !image.uri.match(/jpg|png/g)){
+      alert("Please Upload jpg or png format images only !");
+      return null;
+    }
   
     const formData = new FormData();
     if(!image.uri){
@@ -45,7 +49,7 @@ const NewPost = () => {
     }
   
     const res = await axios({
-      url: `http://192.168.43.148:8080/create_post`,
+      url: data.api_link + "/create_post",
       method: "post",
       data: formData,
       headers: {
@@ -54,7 +58,7 @@ const NewPost = () => {
       }
     });
     
-    setPostBody("");
+    setPostBody(" ");
     set_image({});
     alert("New Post Added!");
   }

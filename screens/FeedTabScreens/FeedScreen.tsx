@@ -4,10 +4,10 @@ import { Text, View, TouchableOpacity, FlatList, Modal, ScrollView } from 'react
 // icons
 import { Entypo, FontAwesome, Feather } from '@expo/vector-icons';
 
-import ContextData from './context/AuthContext';
+import ContextData from '../context/AuthContext';
 
-import Post from './components/Post';
-import NewPost from './components/NewPost';
+import Post from '../components/Post';
+import NewPost from '../components/NewPost';
 
 const FeedScreen = ({navigation}: any) => {
   // contextData
@@ -19,9 +19,10 @@ const FeedScreen = ({navigation}: any) => {
   
   // fetching data from my server
   const fetchData = async () => {
-    console.log("feed fetch");
-    const response = await fetch(`http://192.168.43.148:8080/all_posts`);
+    
+    const response = await fetch(data.api_link + "/all_posts");
     setFeed(await response.json());
+  
   }
 
   // whenever screen is focused then data fetching will be done
@@ -46,7 +47,7 @@ const FeedScreen = ({navigation}: any) => {
                 <Text style={{textAlign: 'center'}} ><FontAwesome name="refresh" size={16} />  Refresh </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={{width: '33.3%', borderRightWidth: 0.2, borderColor: 'grey'}} >
+              <TouchableOpacity style={{width: '33.3%', borderRightWidth: 0.2, borderColor: 'grey'}} onPress={() => navigation.navigate("Trending")} >
                 <Text style={{textAlign: 'center'}} ><Feather name="trending-up" size={16} />  Trending </Text>
               </TouchableOpacity>
 
@@ -56,7 +57,7 @@ const FeedScreen = ({navigation}: any) => {
             </View>
           }
     
-          data={feed.reverse()}
+          data={feed}
           keyExtractor={(item) => item._id }
           onEndReached={() => {console.log("reached to end")}}
           onEndReachedThreshold={0.5}

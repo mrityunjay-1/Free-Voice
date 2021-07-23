@@ -28,12 +28,15 @@ const reducer = (state: any, action: any) => {
 
 
 const AuthContext = ({children}: any) => {
-  const [data, dispatch] = useReducer(reducer, {name: "", userId: "" , avatar: "", isLoggedIn: false});
+  const api_link = process.env.NODE_ENV == "development" ? "http://192.168.43.148:8080" : "https://nodeapp-320304.df.r.appspot.com";
+  const state1 = {name: "", userId: "" , avatar: "", isLoggedIn: false, api_link}
+
+  const [data, dispatch] = useReducer(reducer, state1);
 
   
   const signIn = async ({userId, password}: any) => {
     try{
-      const res = await axios.post(`http://192.168.43.148:8080/signin`,  {userId, password});
+      const res = await axios.post(api_link + "/signin",  {userId, password});
       if(res.status == 200 && res.data.message == "okay"){
 
         // saving locally
@@ -54,7 +57,7 @@ const AuthContext = ({children}: any) => {
     
   const signUp = async ({name, email, userId, password, cb}: any) => {
     try{
-      const res = await axios.post(`http://192.168.43.148:8080/create`, {name, email, userId, password});
+      const res = await axios.post(api_link + "/create", {name, email, userId, password});
       if(res.status == 200 && res.data.message == "okay"){
         // this is safe place to update my central data state
         cb();

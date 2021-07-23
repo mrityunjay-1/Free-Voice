@@ -20,8 +20,8 @@ const SignIn = ({navigation}: any) => {
   
     signIn({userId, password});
   }
-  
-  
+
+
   return (
     <>
       <View style={styles.mainView} >

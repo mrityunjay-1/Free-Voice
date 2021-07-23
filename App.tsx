@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, Image} from 'react-native';
 
 // icons
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // for navigation
 import {NavigationContainer} from '@react-navigation/native';
@@ -11,16 +11,18 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 // stack screens
 import ProfileScreen from './screens/ProfileScreen';
-import FeedScreen from './screens/FeedScreen';
+import FeedScreen from './screens/FeedTabScreens/FeedScreen';
+import SearchScreen from './screens/FeedTabScreens/SearchScreen';
 import QnAScreen from './screens/QnAScreen';
 import NotesScreen from './screens/NotesScreen';
+import TrendingScreen from './screens/TrendingScreen';
 
 // auth screens
 import SignIn from './screens/authentication/SignIn';
 import SignUp from './screens/authentication/SignUp';
 
 // Context
-import ContextData, {AuthContext} from './screens/context/AuthContext';
+import ContextData, { AuthContext } from './screens/context/AuthContext';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -48,20 +50,27 @@ const ProfileStack = () => {
 
 const FeedStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{animationEnabled: false}} >
       {/* screen 1 */}
       <Stack.Screen component={FeedScreen} name="Free Voice" 
         options={{ 
-          headerRight: () => { 
-              return <View style={{width: 100,flexDirection: 'row', justifyContent: 'space-around',  margin: 10}} >
-                      <Text> <AntDesign name="search1" size={22} style={{width: 50}} /> </Text>
-                      <Text style={{position: 'relative'}}> 
-                          <AntDesign name="message1" size={22} style={{width: 50}} />
-                          <Text style={{position: 'absolute', top: 0, fontSize: 8, color: 'red'}}></Text>
-                      </Text>
-                    </View>}, 
+          header: ({navigation}: any) => {
+            return <View style={{backgroundColor: 'rgba(0, 0, 255, 0.1)'}} >
+                      <Text style={{fontSize: 22}}></Text>
+                      <View style={{width: '100%',flexDirection: 'row', justifyContent: 'space-between', padding: 15}} >
+                        <Text> Free Voice </Text>
+                        <View style={{width: 100, flexDirection: 'row', justifyContent: 'space-around'}} >
+                          <Text onPress={() => navigation.navigate("SearchScreen")} > <AntDesign name="search1" size={22} style={{width: 50}} /> </Text>
+                          <Text style={{position: 'relative'}}> <MaterialCommunityIcons name="dots-vertical" size={24}  style={{width: 50}} /> </Text>
+                        </View>
+                      </View>
+                    </View>
+          }, 
           headerStyle: {elevation: 0, height: 75, backgroundColor: 'rgba(0, 0, 255, 0.1)'}}}
       />
+      
+      <Stack.Screen component={SearchScreen} name="SearchScreen" options={{headerShown: false}} />
+  
     </Stack.Navigator>
   );
 };
@@ -90,7 +99,7 @@ const App = () => {
       >
   
         <Tabs.Screen component={FeedStack} name="Feed" options={{tabBarIcon: () => <AntDesign name="home" size={20} /> }} />
-        <Tabs.Screen component={FeedScreen} name="Trending" options={{tabBarIcon: () => <MaterialIcons name="trending-up" size={20} /> }}  />
+        <Tabs.Screen component={TrendingScreen} name="Trending" options={{tabBarIcon: () => <MaterialIcons name="trending-up" size={20} /> }}  />
         <Tabs.Screen component={ProfileStack} name="My Profile" options={{tabBarIcon: () => <AntDesign name="user" size={20} /> }}  />
         <Tabs.Screen component={QnAScreen} name="QnA" options={{tabBarIcon: () => <AntDesign name="questioncircleo" size={20} /> }}  />
         <Tabs.Screen component={NotesScreen} name="Notes" options={{tabBarIcon: () => <MaterialIcons name="notes" size={20} /> }}  />

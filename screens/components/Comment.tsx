@@ -13,7 +13,7 @@ const Comment = ({props}: any) => {
     // discarding comment if there is present in TextInput
     if(comment == "" || comment.length == 0) return null;
     
-    const res = await axios.post(`http://192.168.43.148:8080/comment`, {
+    const res = await axios.post(data.api_link + "/comment", {
       postId: props.data._id, comment, author: props.author
     });
     console.log(res.data);
@@ -27,7 +27,7 @@ const Comment = ({props}: any) => {
         {/* post details */}
         <View style={styles.post}>
           <View style={{flexDirection: 'row', paddingVertical: 15}} >
-            <Image style={{width: 20, height: 20}} source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}} />
+            <Image style={{width: 20, height: 20}} source={{uri: 'https://storage.googleapis.com/free-voice-images/profile.png'}} />
             <Text> {props.creator} </Text>
           </View>
           <View>
