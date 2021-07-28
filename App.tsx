@@ -10,12 +10,19 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 // stack screens
-import ProfileScreen from './screens/ProfileScreen';
+import ProfileScreen from './screens/ProfileTabScreens/ProfileScreen';
+import ProfileSettingsScreen from './screens/ProfileTabScreens/ProfileSettingsScreen';
+
 import FeedScreen from './screens/FeedTabScreens/FeedScreen';
 import SearchScreen from './screens/FeedTabScreens/SearchScreen';
+import NewPostScreen from './screens/FeedTabScreens/NewPostScreen';
+
+
+import TrendingScreen from './screens/TrendingTabScreens/TrendingScreen';
+
+
 import QnAScreen from './screens/QnAScreen';
 import NotesScreen from './screens/NotesScreen';
-import TrendingScreen from './screens/TrendingScreen';
 
 // auth screens
 import SignIn from './screens/authentication/SignIn';
@@ -29,7 +36,6 @@ const Tabs = createBottomTabNavigator();
 
 
 
-
 const ProfileStack = () => {
   const {data}: any = React.useContext(ContextData);
   return (
@@ -37,7 +43,10 @@ const ProfileStack = () => {
       {
         data.isLoggedIn 
         ?
+        <>
           <Stack.Screen component={ProfileScreen} name="Mrityunjay Kumar" options={{headerShown: false, headerStyle: {elevation: 0, backgroundColor: 'white'}, headerTitleAlign: 'center'}} />
+          <Stack.Screen component={ProfileSettingsScreen } name="Settings" />
+        </>
         :
         <>
           <Stack.Screen component={SignIn} name="SignIn" options={{headerTitleAlign: 'center'}} />
@@ -56,9 +65,9 @@ const FeedStack = () => {
         options={{ 
           header: ({navigation}: any) => {
             return <View style={{backgroundColor: 'rgba(0, 0, 255, 0.1)'}} >
-                      <Text style={{fontSize: 22}}></Text>
+                      <Text style={{fontSize: 24}}></Text>
                       <View style={{width: '100%',flexDirection: 'row', justifyContent: 'space-between', padding: 15}} >
-                        <Text> Free Voice </Text>
+                        <Text style={{fontSize: 22, fontWeight: 'bold'}}> Free Voice </Text>
                         <View style={{width: 100, flexDirection: 'row', justifyContent: 'space-around'}} >
                           <Text onPress={() => navigation.navigate("SearchScreen")} > <AntDesign name="search1" size={22} style={{width: 50}} /> </Text>
                           <Text style={{position: 'relative'}}> <MaterialCommunityIcons name="dots-vertical" size={24}  style={{width: 50}} /> </Text>
@@ -66,10 +75,11 @@ const FeedStack = () => {
                       </View>
                     </View>
           }, 
-          headerStyle: {elevation: 0, height: 75, backgroundColor: 'rgba(0, 0, 255, 0.1)'}}}
+          headerStyle: {elevation: 0, backgroundColor: 'rgba(0, 0, 255, 0.1)'}}}
       />
       
       <Stack.Screen component={SearchScreen} name="SearchScreen" options={{headerShown: false}} />
+      <Stack.Screen component={NewPostScreen} name="NewPostScreen" options={{headerShown: false}} />
   
     </Stack.Navigator>
   );
@@ -87,12 +97,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Tabs.Navigator
-
           tabBarOptions={{
             activeTintColor: 'black',
             inactiveTintColor: 'grey',
-            activeBackgroundColor: 'rgba(0, 0, 255, 0.1)', 
-            labelStyle:{fontSize: 10, paddingBottom: 1},
+            activeBackgroundColor: 'rgba(0, 0, 255, 0.1)',
+            labelStyle:{fontSize: 10},
             style: {elevation: 0},
             keyboardHidesTabBar: true
           }} 

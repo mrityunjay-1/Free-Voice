@@ -44,7 +44,7 @@ const SearchBar = (props: any) => {
       <Text style={{margin: 15}}>Search result:</Text>
     </>
   );
-}
+};
 
 const SearchScreen = () => {
   const [ users_list, set_users_list] = useState([]);

@@ -1,29 +1,32 @@
 import React, {useContext} from 'react';
 import {Text, View, ScrollView, TextInput, TouchableOpacity, Image, Dimensions} from 'react-native';
 import axios from 'axios';
-
-import ContextData from '../context/AuthContext';
-
 import * as ImagePicker from 'expo-image-picker';
 
+import ContextData from '../context/AuthContext';
 
 const width = Dimensions.get("window").width;
 
 
-const NewPost = () => {
-  const {data}: any = useContext(ContextData);
+const NewPostScreen = ({navigation}) => {
 
-  const [postBody, setPostBody] = React.useState(" ");
+  const {data}: any = useContext(ContextData);
+  const [postBody, setPostBody] = React.useState("");
   const [image, set_image]: any = React.useState({});
   
+
+
   // creating post and sending it to my node server
   
   // adding image
   const selectImage = async () => {
     const image = await ImagePicker.launchImageLibraryAsync();
+    // console.log(image);
     set_image(image);
   }
   
+
+
   const createPost = async () => {
     if(!image.uri && (postBody === "" || postBody.length === 0)) 
     { 
@@ -58,10 +61,23 @@ const NewPost = () => {
       }
     });
     
-    setPostBody(" ");
+    setPostBody("");
     set_image({});
     alert("New Post Added!");
   }
+
+
+
+  // checking for user login
+  React.useEffect(() => {
+    if(!data.isLoggedIn){
+      alert("Please Log In");
+      navigation.navigate("My Profile");
+    }
+  }, []);
+
+
+
 
   return (
     <>
@@ -71,7 +87,7 @@ const NewPost = () => {
         <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 22, padding: 10}}> Create New Post </Text>
         <Text onPress={selectImage} style={{margin: 15,textAlign: 'center', padding: 10, borderColor: 'grey', borderWidth: 1}}> Add Image  + </Text>
         
-        <Text style={{marginHorizontal: 15}}>Post Preview </Text>
+        {/* <Text style={{marginHorizontal: 15}}>Post Preview </Text> */}
         
 
         <TextInput
@@ -99,7 +115,7 @@ const NewPost = () => {
   );
 };
 
-export default NewPost;
+export default NewPostScreen;
 
 
 // createPost function in "line no - 28" is main function for NewPost Screen

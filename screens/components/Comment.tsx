@@ -8,21 +8,31 @@ const Comment = ({props}: any) => {
   // context data
   const {data}: any = React.useContext(ContextData);
   const [comment, setComment] = React.useState("");
+  const [postComment, setPostComment] = React.useState(props.comments);
+
+
+
 
   const sendComment = async () => {
     // discarding comment if there is present in TextInput
-    if(comment == "" || comment.length == 0) return null;
-    
+    if (comment == "" || comment.length == 0) return null;
+
     const res = await axios.post(data.api_link + "/comment", {
       postId: props.data._id, comment, author: props.author
     });
+
+    setPostComment([...postComment, {_id: new Date().getTime().toString(), comment}])
     console.log(res.data);
   };
+
+
+
+
 
   return (
     <>
       <Text style={{fontSize: 22}} ></Text>
-        
+
       <ScrollView>
         {/* post details */}
         <View style={styles.post}>
@@ -47,32 +57,33 @@ const Comment = ({props}: any) => {
           <TextInput
             style={styles.commentinput}
             value={comment}
-            onChangeText={(value) => setComment(value) }
+            onChangeText={(value) => setComment(value)}
             multiline={true}
             placeholder="write a comment"
           />
           <TouchableOpacity onPress={() => {
-            if(!data.isLoggedIn){ 
-              alert("Please Login First!"); return ;}
-              sendComment();
-              setComment(""); // resetting comment box to blank
-            }}> 
+            if (!data.isLoggedIn) {
+              alert("Please Login First!"); return;
+            }
+            sendComment();
+            setComment(""); // resetting comment box to blank
+          }}>
             <Text style={styles.commentButton} > Comment </Text>
           </TouchableOpacity>
-  
+
           {/* a horizontal line separator */}
           <View style={styles.horizontalSeparator} ></View>
         </View>
-      
+
         {/*  comments related to this post */}
         <View style={{margin: 15}} >
           <FlatList
-            data={props.comments}
-            keyExtractor={(item) => item._id }
+            data={postComment}
+            keyExtractor={(item) => item._id}
             renderItem={({item}) => {
-              return <Text style={styles.comment}>{item.comment}</Text> ;
+              return <Text style={styles.comment}>{item.comment}</Text>;
             }}
-          />          
+          />
         </View>
       </ScrollView>
     </>
@@ -86,8 +97,8 @@ const styles = StyleSheet.create({
   post: {
     padding: 15, backgroundColor: 'rgba(0, 0, 255, 0.1)'
   },
-  comment:{
-    backgroundColor: 'rgba(0, 0, 255, 0.1)', borderRadius: 5, padding: 8, marginVertical: 8,  width: '85%'
+  comment: {
+    backgroundColor: 'rgba(0, 0, 255, 0.1)', borderRadius: 5, padding: 8, marginVertical: 8, width: '85%'
   },
   commentButton: {
     fontWeight: 'bold', borderRadius: 3, padding: 10, textAlign: 'center', backgroundColor: 'rgba(0, 0, 255, 0.1)', marginHorizontal: 15
